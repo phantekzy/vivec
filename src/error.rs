@@ -22,3 +22,9 @@ impl fmt::Display for VivecError {
         }
     }
 }
+
+impl From<std::io::Error> for VivecError {
+    fn from(err: std::io::Error) -> Self {
+        VivecError::Io(err)
+    }
+}
