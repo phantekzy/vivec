@@ -1,7 +1,7 @@
 use std::fmt;
 
 #[derive(Debug)]
-pub enum VivecError {
+pub enum VanguardError {
     Io(std::io::Error),
     Parse(String),
     Network(String),
@@ -9,22 +9,22 @@ pub enum VivecError {
     Timeout,
 }
 
-impl std::error::Error for VivecError {}
+impl std::error::Error for VanguardError {}
 
-impl fmt::Display for VivecError {
+impl fmt::Display for VanguardError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            VivecError::Io(e) => write!(f, "IO Error : {}", e),
-            VivecError::Parse(s) => write!(f, "Parsing Error : {}", s),
-            VivecError::Network(s) => writeln!(f, "Network Error : {}", s),
-            VivecError::InvalidUrl(u) => writeln!(f, "Invalid URL : {}", u),
-            VivecError::Timeout => writeln!(f, "Request timed out"),
+            VanguardError::Io(e) => write!(f, "IO Error: {}", e),
+            VanguardError::Parse(s) => write!(f, "Parsing Error: {}", s),
+            VanguardError::Network(s) => write!(f, "Network Error: {}", s),
+            VanguardError::InvalidUrl(u) => write!(f, "Invalid URL: {}", u),
+            VanguardError::Timeout => write!(f, "Request timed out"),
         }
     }
 }
 
-impl From<std::io::Error> for VivecError {
+impl From<std::io::Error> for VanguardError {
     fn from(err: std::io::Error) -> Self {
-        VivecError::Io(err)
+        VanguardError::Io(err)
     }
 }
