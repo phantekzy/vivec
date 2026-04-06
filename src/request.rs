@@ -38,14 +38,23 @@ impl Request {
             Method::PUT => "PUT",
             Method::DELETE => "DELETE",
         };
+
         let mut raw = format!("{} {} HTTP/1.1\r\n", method_str, path);
         raw.push_str(&format!("Host: {}\r\n", host));
 
         for (k, v) in &self.headers {
             let key_low = k.to_lowercase();
             if key_low != "host" && key_low != "content-length" {
-                raw.push_str(&format!("{}:{}\r\n", k, v));
+                raw.push_str(&format!("{}: {}\r\n", k, v));
             }
         }
+
+        if let Some(ref body) = self.body {
+            raw.push_str(&format!("Content-Length: {}\r\n\r\n{}", body.len(), body));
+        } else {
+            raw.push_str("\r\n");
+        }
+
+        raw
     }
 }
