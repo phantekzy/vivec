@@ -37,5 +37,7 @@ impl Request {
             Method::PUT => "PUT",
             Method::DELETE => "DELETE",
         };
+        let mut raw = format!("{} {} HTTP/1.1\r\n")
+        //im here
     }
 }
