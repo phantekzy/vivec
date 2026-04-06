@@ -31,5 +31,12 @@ impl Request {
         }
     }
 
-    pub fn to_http_string(&self, path: &str, host: &str) -> String {}
+    pub fn to_http_string(&self, path: &str, host: &str) -> String {
+        let method_str = match self.method {
+            Method::GET => "GET",
+            Method::POST => "POST",
+            Method::PUT => "PUT",
+            Method::DELETE => "DELETE",
+        };
+    }
 }
