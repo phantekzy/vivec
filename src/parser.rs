@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
-use crate::error::XsusError;
+use crate::{error::XsusError, response::Response};
 
-pub fn parse_response(raw: &str) -> Result<Result, XsusError> {
+pub fn parse_response(raw: &str) -> Result<Response, XsusError> {
     let mut lines = raw.lines();
 
     let status_line = lines
@@ -32,4 +32,9 @@ pub fn parse_response(raw: &str) -> Result<Result, XsusError> {
             body.push('\n');
         }
     }
+    Ok(Response {
+        status: status_code,
+        headers,
+        data: body.trim().to_string(),
+    })
 }
