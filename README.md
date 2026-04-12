@@ -1,5 +1,5 @@
 
-<p align="left">
+<p align="center">
   <img src="xsusLogo.png" width="800" alt="Xsus Logo">
 </p>
 
