@@ -27,10 +27,15 @@ impl Xsus {
         let full_url = format!("{}{}", self.base_url, path);
         let mut req = Request::new(Method::GET, &full_url);
 
-        for interceptor in self.interceptors.request {
+        for interceptor in &self.interceptors.request {
             req = interceptor(req)
         }
         let raw_body = execute_network_call(&req, self.timeout)?;
         let mut res = parse_response(&raw_body)?;
+
+        for interceptor in &self.interceptors.response {
+            res = interceptor(res);
+        }
+        Ok(res)
     }
 }
