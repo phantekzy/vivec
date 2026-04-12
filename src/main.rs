@@ -9,4 +9,15 @@ fn main() {
         );
         req
     }));
+
+    println!("Sending Xsus Request !...");
+
+    match client.get("/") {
+        Ok(res) => {
+            println!("Status: {}", res.status);
+            println!("Headers: {:?}", res.headers);
+            println!("Data Snippet: {}", &res.data[..50]);
+        }
+        Err(e) => eprintln!("Xsus Error: {}", e),
+    }
 }
