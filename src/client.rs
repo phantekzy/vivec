@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 use crate::{
     error::XsusError,
     interceptor::Interceptors,
@@ -8,6 +6,7 @@ use crate::{
     response::Response,
     transport::execute_network_call,
 };
+use std::time::Duration;
 
 pub struct Xsus {
     pub base_url: String,
@@ -23,15 +22,20 @@ impl Xsus {
             interceptors: Interceptors::new(),
         }
     }
+
     pub fn get(&self, path: &str) -> Result<Response, XsusError> {
-        let full_url = format!("{}{}", self.base_url, path);
+        let base = self.base_url.trim_end_matches('/');
+        let sub = path.trim_start_matches('/');
+        let full_url = format!("{}/{}", base, sub);
+
         let mut req = Request::new(Method::GET, &full_url);
 
         for interceptor in &self.interceptors.request {
-            req = interceptor(req)
+            req = interceptor(req);
         }
-        let raw_body = execute_network_call(&req, self.timeout)?;
-        let mut res = parse_response(&raw_body)?;
+
+        let raw_res = execute_network_call(&req, self.timeout)?;
+        let mut res = parse_response(&raw_res)?;
 
         for interceptor in &self.interceptors.response {
             res = interceptor(res);
